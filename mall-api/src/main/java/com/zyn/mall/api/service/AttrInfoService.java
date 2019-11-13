@@ -1,6 +1,6 @@
 package com.zyn.mall.api.service;
 
-import com.zyn.mall.api.bean.PmsBaseAttrInfo;
+import com.zyn.mall.api.bean.base.PmsBaseAttrInfo;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public interface AttrInfoService {
 
     /**
-     * 通过PmsBaseAttrInfo三级分类的id查询其下的所有属性
+     * 通过PmsBaseAttrInfo三级分类的id查询其下的所有平台属性
      * @param catalog3Id
      * @return
      */

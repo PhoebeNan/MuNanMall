@@ -1,8 +1,8 @@
 package com.zyn.mall.manager.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.zyn.mall.api.bean.PmsBaseAttrInfo;
-import com.zyn.mall.api.bean.PmsBaseAttrValue;
+import com.zyn.mall.api.bean.base.PmsBaseAttrInfo;
+import com.zyn.mall.api.bean.base.PmsBaseAttrValue;
 import com.zyn.mall.api.service.AttrInfoService;
 import com.zyn.mall.manager.mapper.PmsBaseAttrInfoMapper;
 import com.zyn.mall.manager.mapper.PmsBaseAttrValueMapper;
@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,6 +32,17 @@ public class AttrInfoImpl implements AttrInfoService {
         Example example = new Example(PmsBaseAttrInfo.class);
         example.createCriteria().andEqualTo("catalog3Id", catalog3Id);
         List<PmsBaseAttrInfo> pmsBaseAttrInfoList = pmsBaseAttrInfoMapper.selectByExample(example);
+        List<PmsBaseAttrValue> pmsBaseAttrValueList = new ArrayList<PmsBaseAttrValue>();
+
+        for (PmsBaseAttrInfo pmsBaseAttrInfo : pmsBaseAttrInfoList) {
+
+            //在查询出平台属性的同时，查询出平台属性值
+            PmsBaseAttrValue pmsBaseAttrValue = new PmsBaseAttrValue();
+            pmsBaseAttrValue.setAttrId(pmsBaseAttrInfo.getId());
+
+            pmsBaseAttrValueList = pmsBaseAttrValueMapper.select(pmsBaseAttrValue);
+            pmsBaseAttrInfo.setAttrValueList(pmsBaseAttrValueList);
+        }
         return pmsBaseAttrInfoList;
     }
 

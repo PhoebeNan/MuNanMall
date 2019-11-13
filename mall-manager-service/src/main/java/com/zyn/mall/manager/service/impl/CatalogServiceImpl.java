@@ -1,9 +1,9 @@
 package com.zyn.mall.manager.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.zyn.mall.api.bean.PmsBaseCatalog1;
-import com.zyn.mall.api.bean.PmsBaseCatalog2;
-import com.zyn.mall.api.bean.PmsBaseCatalog3;
+import com.zyn.mall.api.bean.catalog.PmsBaseCatalog1;
+import com.zyn.mall.api.bean.catalog.PmsBaseCatalog2;
+import com.zyn.mall.api.bean.catalog.PmsBaseCatalog3;
 import com.zyn.mall.api.service.CatalogService;
 import com.zyn.mall.manager.mapper.PmsBaseCatalog1Mapper;
 import com.zyn.mall.manager.mapper.PmsBaseCatalog2Mapper;

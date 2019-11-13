@@ -1,4 +1,4 @@
-package com.zyn.mall.api.bean;
+package com.zyn.mall.api.bean.catalog;
 
 
 import lombok.Data;
@@ -12,17 +12,16 @@ import java.util.List;
  * @return
  */
 @Data
-public class PmsBaseCatalog2 implements Serializable {
+public class PmsBaseCatalog1 implements Serializable {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     @Column
     private String name;
-    @Column
-    private String catalog1Id;
 
     @Transient
-    private List<PmsBaseCatalog3> catalog3List;
+    private List<PmsBaseCatalog2> catalog2s;
 
 }
+

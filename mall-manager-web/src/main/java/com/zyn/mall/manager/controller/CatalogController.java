@@ -1,9 +1,9 @@
 package com.zyn.mall.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.zyn.mall.api.bean.PmsBaseCatalog1;
-import com.zyn.mall.api.bean.PmsBaseCatalog2;
-import com.zyn.mall.api.bean.PmsBaseCatalog3;
+import com.zyn.mall.api.bean.catalog.PmsBaseCatalog1;
+import com.zyn.mall.api.bean.catalog.PmsBaseCatalog2;
+import com.zyn.mall.api.bean.catalog.PmsBaseCatalog3;
 import com.zyn.mall.api.service.CatalogService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

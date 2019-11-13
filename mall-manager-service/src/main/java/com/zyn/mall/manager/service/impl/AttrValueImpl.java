@@ -1,7 +1,7 @@
 package com.zyn.mall.manager.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.zyn.mall.api.bean.PmsBaseAttrValue;
+import com.zyn.mall.api.bean.base.PmsBaseAttrValue;
 import com.zyn.mall.api.service.AttrValueService;
 import com.zyn.mall.manager.mapper.PmsBaseAttrValueMapper;
 import org.springframework.beans.factory.annotation.Autowired;

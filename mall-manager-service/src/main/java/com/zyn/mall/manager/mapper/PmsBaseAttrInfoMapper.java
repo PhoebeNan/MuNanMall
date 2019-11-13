@@ -1,6 +1,6 @@
 package com.zyn.mall.manager.mapper;
 
-import com.zyn.mall.api.bean.PmsBaseAttrInfo;
+import com.zyn.mall.api.bean.base.PmsBaseAttrInfo;
 import tk.mybatis.mapper.common.Mapper;
 
 /**

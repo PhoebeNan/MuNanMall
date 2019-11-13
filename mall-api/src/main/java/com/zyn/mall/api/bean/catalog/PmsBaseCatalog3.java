@@ -1,27 +1,26 @@
-package com.zyn.mall.api.bean;
-
+package com.zyn.mall.api.bean.catalog;
 
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * @param
- * @return
+ * @author zhaoyanan
+ * @create 2019-11-08-15:41
  */
 @Data
-public class PmsBaseCatalog1 implements Serializable {
+public class PmsBaseCatalog3 implements Serializable {
+
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
     @Column
     private String name;
 
-    @Transient
-    private List<PmsBaseCatalog2> catalog2s;
+    @Column
+    private String catalog2Id;
 
 }
-

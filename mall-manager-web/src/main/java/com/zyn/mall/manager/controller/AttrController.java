@@ -1,8 +1,8 @@
 package com.zyn.mall.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.zyn.mall.api.bean.PmsBaseAttrInfo;
-import com.zyn.mall.api.bean.PmsBaseAttrValue;
+import com.zyn.mall.api.bean.base.PmsBaseAttrInfo;
+import com.zyn.mall.api.bean.base.PmsBaseAttrValue;
 import com.zyn.mall.api.service.AttrInfoService;
 import com.zyn.mall.api.service.AttrValueService;
 import org.springframework.stereotype.Controller;

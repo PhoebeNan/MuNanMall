@@ -1,9 +1,10 @@
 package com.zyn.mall.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.zyn.mall.api.bean.spu.PmsBaseSaleAttr;
+import com.zyn.mall.api.bean.base.PmsBaseSaleAttr;
 import com.zyn.mall.api.bean.spu.PmsProductInfo;
 import com.zyn.mall.api.service.SpuProductService;
+import com.zyn.mall.util.FastdfsUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,19 +46,20 @@ public class SpuController {
     public String fileUpLoad(@RequestParam(name = "file")MultipartFile multipartFile){
 
         //把图片或视频的数据对象上传到分布式文件存储系统，把元数据存储到数据库中
-
         //从分布式文件存储系统中获取图片的路径并返回给前端页面
-        String imageUrl = "https://m.360buyimg.com/babel/jfs/t5137/20/1794970752/352145/d56e4e94/591417dcN4fe5ef33.jpg";
-        return imageUrl;
+        String imageUpLoadPath = FastdfsUtils.imageUpLoad(this.getClass(), multipartFile);
+        //返回前端页面图片存储在fastdfs分布式文件存储系统的路径
+        return imageUpLoadPath;
     }
 
     //saveSpuInfo
     @RequestMapping("/saveSpuInfo")
     @ResponseBody
-    public List<PmsProductInfo> saveSpuInfo(@RequestBody PmsProductInfo pmsProductInfo){
+    public String saveSpuInfo(@RequestBody PmsProductInfo pmsProductInfo){
 
+        spuProductService.saveSpuInfo(pmsProductInfo);
 
-        return null;
+        return "redirect:/spuList";
     }
 
 }

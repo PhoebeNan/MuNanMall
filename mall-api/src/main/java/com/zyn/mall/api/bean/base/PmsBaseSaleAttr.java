@@ -1,4 +1,4 @@
-package com.zyn.mall.api.bean.spu;
+package com.zyn.mall.api.bean.base;
 
 import lombok.Data;
 

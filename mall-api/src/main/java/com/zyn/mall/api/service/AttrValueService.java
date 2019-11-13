@@ -1,6 +1,6 @@
 package com.zyn.mall.api.service;
 
-import com.zyn.mall.api.bean.PmsBaseAttrValue;
+import com.zyn.mall.api.bean.base.PmsBaseAttrValue;
 
 import java.util.List;
 

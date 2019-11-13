@@ -1,6 +1,6 @@
 package com.zyn.mall.api.service;
 
-import com.zyn.mall.api.bean.spu.PmsBaseSaleAttr;
+import com.zyn.mall.api.bean.base.PmsBaseSaleAttr;
 import com.zyn.mall.api.bean.spu.PmsProductInfo;
 
 import java.util.List;
@@ -25,4 +25,9 @@ public interface SpuProductService{
      */
     List<PmsBaseSaleAttr> baseSaleAttrList();
 
+    /**
+     * 把商品的元数据信息保存到数据库中
+     * @param pmsProductInfo
+     */
+    void saveSpuInfo(PmsProductInfo pmsProductInfo);
 }
