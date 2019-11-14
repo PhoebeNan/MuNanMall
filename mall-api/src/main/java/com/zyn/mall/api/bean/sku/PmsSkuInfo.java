@@ -22,6 +22,9 @@ public class PmsSkuInfo implements Serializable {
     @Column
     String productId;
 
+    @Transient
+    String spuId; //对应前端传递过来的数据，在后端对productId进行赋值
+
     @Column
     BigDecimal price;
 
@@ -41,12 +44,12 @@ public class PmsSkuInfo implements Serializable {
     String skuDefaultImg;
 
     @Transient
-    List<PmsSkuImage> pmsSkuImageList;
+    List<PmsSkuImage> skuImageList;
 
     @Transient
-    List<PmsSkuAttrValue> pmsSkuAttrValueList;
+    List<PmsSkuAttrValue> skuAttrValueList;
 
     @Transient
-    List<PmsSkuSaleAttrValue> pmsSkuSaleAttrValueList;
+    List<PmsSkuSaleAttrValue> skuSaleAttrValueList;
 
 }

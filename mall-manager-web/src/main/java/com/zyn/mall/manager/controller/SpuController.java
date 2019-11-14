@@ -2,7 +2,11 @@ package com.zyn.mall.manager.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.zyn.mall.api.bean.base.PmsBaseSaleAttr;
+import com.zyn.mall.api.bean.spu.PmsProductImage;
 import com.zyn.mall.api.bean.spu.PmsProductInfo;
+import com.zyn.mall.api.bean.spu.PmsProductSaleAttr;
+import com.zyn.mall.api.service.PmsProductImageService;
+import com.zyn.mall.api.service.PmsProductSaleAttrService;
 import com.zyn.mall.api.service.SpuProductService;
 import com.zyn.mall.util.FastdfsUtils;
 import org.springframework.stereotype.Controller;
@@ -21,6 +25,12 @@ public class SpuController {
 
     @Reference
     private SpuProductService spuProductService;
+
+    @Reference
+    private PmsProductSaleAttrService pmsProductSaleAttrService;
+
+    @Reference
+    private PmsProductImageService pmsProductImageService;
 
     //http://127.0.0.1:8081/spuList?catalog3Id=61
     @RequestMapping(value = "/spuList",method = RequestMethod.GET)
@@ -60,6 +70,27 @@ public class SpuController {
         spuProductService.saveSpuInfo(pmsProductInfo);
 
         return "redirect:/spuList";
+    }
+
+
+    //spuSaleAttrList?spuId=24
+    @RequestMapping("/spuSaleAttrList")
+    @ResponseBody
+    public List<PmsProductSaleAttr> spuSaleAttrList(String spuId){
+
+        List<PmsProductSaleAttr> pmsSkuSaleAttrValues = pmsProductSaleAttrService.spuSaleAttrList(spuId);
+
+        return pmsSkuSaleAttrValues;
+    }
+
+    //spuImageList?spuId=68
+    @RequestMapping("/spuImageList")
+    @ResponseBody
+    public List<PmsProductImage> spuImageList(String spuId){
+
+        List<PmsProductImage> productImages = pmsProductImageService.spuImageList(spuId);
+
+        return productImages;
     }
 
 }
