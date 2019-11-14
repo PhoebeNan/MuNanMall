@@ -6,8 +6,13 @@
 </head>
 <body>
     hello Thymeleaf
-    <br/>
+    <br>
+    杀杀杀
+    <p th:each="str:${list}" >
+        <input th:text="${str}" th:value="${str}" value="11"/>
+    </p>
 
+    <p th:if="1==2">存在</p>
     <p th:text="${key}">打底值</p>
 </body>
 </html>

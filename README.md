@@ -51,3 +51,23 @@ http://192.168.157.130:8080/dubbo/governance/applications
 #hosts文件路径已经用其他域名代替localhost
 C:\Windows\System32\drivers\etc
 127.0.0.1 localhost user.mall.com cart.mall.com manage.mall.com www.mall.com item.mall.com
+
+#使用以下两个命令可以下载maven中的依赖
+    <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <name>Nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/repositories/central</url>
+            <layout>default</layout>
+            <!-- 是否开启发布版构件下载 -->
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <!-- 是否开启快照版构件下载 -->
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    
+    mvn clean install -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true

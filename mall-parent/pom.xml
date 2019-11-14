@@ -74,7 +74,7 @@
                 <version>${mybatis.version}</version>
             </dependency>
 
-
+            <!--thymeleaf的支持包，包括松校验与热部署-->
             <dependency>
                 <groupId>net.sourceforge.nekohtml</groupId>
                 <artifactId>nekohtml</artifactId>
@@ -162,6 +162,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
 
 
 </project>
