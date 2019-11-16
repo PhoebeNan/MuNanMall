@@ -2,6 +2,7 @@ package com.zyn.mall.api.service;
 
 import com.zyn.mall.api.bean.base.PmsBaseSaleAttr;
 import com.zyn.mall.api.bean.spu.PmsProductInfo;
+import com.zyn.mall.api.bean.spu.PmsProductSaleAttr;
 
 import java.util.List;
 
@@ -30,4 +31,11 @@ public interface SpuProductService{
      * @param pmsProductInfo
      */
     void saveSpuInfo(PmsProductInfo pmsProductInfo);
+
+    /**
+     * 通过spuId查询此spu下所有销售属性以及销售属性值组合的列表
+     * @param spuId
+     * @return
+     */
+    List<PmsProductSaleAttr> spuSaleAttrListCheckBySku(String spuId,String skuId);
 }

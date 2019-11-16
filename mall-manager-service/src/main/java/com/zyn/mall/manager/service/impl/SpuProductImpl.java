@@ -75,4 +75,32 @@ public class SpuProductImpl implements SpuProductService {
             pmsProductImageMapper.insertSelective(pmsProductImage);
         }
     }
+
+    @Override
+    public List<PmsProductSaleAttr> spuSaleAttrListCheckBySku(String spuId,String skuId) {
+
+        //第一种方式获取isChecked值时性能低下，需要多次查询数据库
+//        PmsProductSaleAttr pmsProductSaleAttr = new PmsProductSaleAttr();
+//
+//        //查询一个spuId下所有销售属性列表
+//        pmsProductSaleAttr.setProductId(spuId);
+//        List<PmsProductSaleAttr> pmsProductSaleAttrs = pmsProductSaleAttrMapper.select(pmsProductSaleAttr);
+//        for (PmsProductSaleAttr productSaleAttr : pmsProductSaleAttrs) {
+//            //获取此spu下每一个销售属性的id
+//            String saleAttrId = productSaleAttr.getSaleAttrId();
+//
+//            //查询一个spuId下所有销售属性值列表
+//            PmsProductSaleAttrValue pmsProductSaleAttrValue = new PmsProductSaleAttrValue();
+//            pmsProductSaleAttrValue.setProductId(spuId);
+//            pmsProductSaleAttrValue.setSaleAttrId(saleAttrId);
+//            List<PmsProductSaleAttrValue> pmsProductSaleAttrValues = pmsProductSaleAttrValueMapper.select(pmsProductSaleAttrValue);
+//
+//            //把销售属性值列表设置到实体类中
+//            productSaleAttr.setSpuSaleAttrValueList(pmsProductSaleAttrValues);
+//        }
+
+        List<PmsProductSaleAttr> pmsProductSaleAttrs = pmsProductSaleAttrMapper.isCheckedMapper(spuId,skuId);
+
+        return pmsProductSaleAttrs;
+    }
 }

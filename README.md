@@ -1,6 +1,9 @@
 # MuNanMall
 木楠分布式商城
 
+#加班时间(17：00-21：00)
+11.8   11.12
+
 # mall-user用户服务：
 #8080
 
@@ -37,6 +40,21 @@ root   123456
 
 #Linux的ip地址
 192.168.157.130
+
+#nginx 的启动方式Linux   
+去 /usr/local/nginx/sbin写入命令
+./nginx
+显示如下命令表示成功
+[root@hadoop1 sbin]# ps -ef|grep nginx 
+root       2266      1  0 16:50 ?        00:00:00 nginx: master process ./nginx
+nobody     2267   2266  0 16:50 ?        00:00:00 nginx: worker process
+root       2269   1944  0 16:50 pts/0    00:00:00 grep nginx
+
+#nginx的启动方式Windows
+D:\day01Movie\leiyou_tools\nginx-1.12.2
+start nginx.exe
+nginx.exe -s stop  ， nginx.exe -s quit停止
+nginx.exe -s reload    重新载入Nginx
 
 #关于zookeeper
 ps -ef|grep zookeeper 出现一段很长的文字表示服务已经启动

@@ -14,5 +14,20 @@
 
     <p th:if="1==2">存在</p>
     <p th:text="${key}">打底值</p>
+
+    <input type="checkbox" th:text="(${check}=='0')?'checked':''" checked="${check}=='1'"/>
+
+    <a th:href="'javascript:a(\''+${key}+'\')'">点击</a>
+
+    <a href="javascript:a(22)">点击</a>
+
+    <script language="JavaScript">
+        function a(str1) {
+            alert("nihao  ====》"+str1);
+        }
+    </script>
+
+    <div th:insert="indexInner::innerPart"></div>
+
 </body>
 </html>
