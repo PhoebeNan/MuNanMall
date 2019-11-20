@@ -2,7 +2,10 @@ package com.zyn.mall.manager.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.zyn.mall.api.bean.base.PmsBaseSaleAttr;
-import com.zyn.mall.api.bean.spu.*;
+import com.zyn.mall.api.bean.spu.PmsProductImage;
+import com.zyn.mall.api.bean.spu.PmsProductInfo;
+import com.zyn.mall.api.bean.spu.PmsProductSaleAttr;
+import com.zyn.mall.api.bean.spu.PmsProductSaleAttrValue;
 import com.zyn.mall.api.service.SpuProductService;
 import com.zyn.mall.manager.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,4 +106,5 @@ public class SpuProductImpl implements SpuProductService {
 
         return pmsProductSaleAttrs;
     }
+
 }

@@ -3,21 +3,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zyn.mall.manager.mapper.PmsProductSaleAttrMapper">
     <select id="isCheckedMapper" resultMap="isCheckedResultMap">
-	SELECT
-		sa.id as sa_id,
-		sav.id as sav_id,
-		sa.*,
-		sav.*,
-	IF
-		( ssav.sku_id, 1, 0 ) AS isChecked 
-	FROM
-		pms_product_sale_attr sa
-		INNER JOIN pms_product_sale_attr_value sav ON sa.product_id = sav.product_id 
-		AND sa.sale_attr_id = sav.sale_attr_id 
-		AND sa.product_id = #{spuId}
-		LEFT JOIN pms_sku_sale_attr_value ssav ON ssav.sale_attr_value_id = sav.id 
-		AND ssav.sku_id = #{skuId}
-		ORDER BY sav.sale_attr_value_name
+		SELECT
+			sa.*,
+			sav.*,
+			sa.id AS sa_id,
+			sav.id AS sav_id,
+		IF
+			( ssav.sku_id, 1, 0 ) AS isChecked
+		FROM
+			pms_product_sale_attr sa
+			INNER JOIN pms_product_sale_attr_value sav ON sa.product_id = sav.product_id
+			AND sa.sale_attr_id = sav.sale_attr_id
+			AND sa.product_id = #{spuId}
+			LEFT JOIN pms_sku_sale_attr_value ssav ON sav.id = ssav.sale_attr_value_id
+			AND sa.sale_attr_id = ssav.sale_attr_id
+			AND ssav.sku_id = #{skuId}
+		ORDER BY
+			sa.sale_attr_id
     </select>
 	
 	<resultMap id="isCheckedResultMap" type="com.zyn.mall.api.bean.spu.PmsProductSaleAttr"

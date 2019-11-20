@@ -2,6 +2,8 @@ package com.zyn.mall.api.service;
 
 import com.zyn.mall.api.bean.sku.PmsSkuInfo;
 
+import java.util.List;
+
 /**
  * @author zhaoyanan
  * @create 2019-11-14-9:46
@@ -19,5 +21,19 @@ public interface PmsSkuInfoService {
      * @param skuId
      * @return
      */
-    PmsSkuInfo skuInfoBySkuId(String skuId);
+    PmsSkuInfo skuInfoBySkuIdFromRedis(String skuId,String ip);
+
+    /**
+     * 通过spuId获取每一个sku下的所有销售属性值列表
+     * @param spuId
+     * @return
+     */
+    List<PmsSkuInfo> getSkuSaleAttrValueListBySpu(String spuId);
+
+    /**
+     * 在Redis缓存数据库中通过skuId查找对应的skuInfo数据
+     * @param skuId
+     * @return
+     */
+    PmsSkuInfo skuInfoBySkuIdFromDb(String skuId);
 }

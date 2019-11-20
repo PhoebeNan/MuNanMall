@@ -40,6 +40,7 @@ root   123456
 
 #Linux的ip地址
 192.168.157.130
+windows 192.168.94.44
 
 #nginx 的启动方式Linux   
 去 /usr/local/nginx/sbin写入命令
@@ -55,6 +56,10 @@ D:\day01Movie\leiyou_tools\nginx-1.12.2
 start nginx.exe
 nginx.exe -s stop  ， nginx.exe -s quit停止
 nginx.exe -s reload    重新载入Nginx
+
+#关于redis  用Java程序连接时一定要使用密码
+cd /usr/local/redis/bin  ./redis-cli -h 192.168.157.130 -p 6379 -a 123456  在客户端上连接redis服务端 在连接后用shutdown命令关闭redis服务端
+cd /usr/lccal/redis  ./bin/redis-server ./redis.conf  加载redis配置文件并开启redis服务端
 
 #关于zookeeper
 ps -ef|grep zookeeper 出现一段很长的文字表示服务已经启动

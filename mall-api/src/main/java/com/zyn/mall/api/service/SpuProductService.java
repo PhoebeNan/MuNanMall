@@ -38,4 +38,5 @@ public interface SpuProductService{
      * @return
      */
     List<PmsProductSaleAttr> spuSaleAttrListCheckBySku(String spuId,String skuId);
+
 }

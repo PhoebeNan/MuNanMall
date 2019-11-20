@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyn.mall.manager.mapper.PmsSkuInfoMapper">
+    <select id="selectSkuSaleAttrValueListBySpu" resultMap="selectSkuSaleAttrValueListBySpuMap">
+		SELECT
+			si.*,
+			ssav.*,
+			si.id AS si_id,
+			ssav.id AS ssav_id
+		FROM
+			pms_sku_info si
+			INNER JOIN pms_sku_sale_attr_value ssav ON si.id = ssav.sku_id
+			AND si.product_id = #{spuId}
+    </select>
+	
+	<resultMap id="selectSkuSaleAttrValueListBySpuMap" type="com.zyn.mall.api.bean.sku.PmsSkuInfo"
+			   autoMapping="true">
+		<result column="si_id" property="id"/>
+
+		<collection property="skuSaleAttrValueList" ofType="com.zyn.mall.api.bean.sku.PmsSkuSaleAttrValue"
+					autoMapping="true">
+			<result column="ssav_id" property="id"/>
+		</collection>
+	</resultMap>
+</mapper>
