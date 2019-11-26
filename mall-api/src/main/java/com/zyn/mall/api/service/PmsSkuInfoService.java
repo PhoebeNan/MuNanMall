@@ -36,4 +36,11 @@ public interface PmsSkuInfoService {
      * @return
      */
     PmsSkuInfo skuInfoBySkuIdFromDb(String skuId);
+
+    /**
+     * 通过三级分类id查询出所有sku商品数据
+     * @param catalog3Id
+     * @return
+     */
+    List<PmsSkuInfo> getSkuAll(String catalog3Id);
 }

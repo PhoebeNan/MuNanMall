@@ -6,25 +6,26 @@
 
 # mall-user用户服务：
 #8080
-
 #mall-user-service 用户服务的service层
 8070 
-
 #mall-user-web 用户服务的web层
 8080
 
 #mall-manager-web 商品分类服务的web层
 8081
-
 #mall-service-web 商品分类服务的service层
 8071
 
 #mall-item-web 商品详细服务的web层
 8082
-
 #mall-item-service 商品详细服务的service层
 此商品详细服务的service层用的是商品分类服务的service层，
 因为其item前台页面使用的是spu和sku等功能已经在商品分类服务的service层写过了
+
+#mall-search-web 商品搜索服务的web层
+8083
+#mall-search-service 商品搜索服务的service层
+8073
 
 #已经提交github上的不必要文件，可以用的命令：
 git rm -r --cached idea
@@ -38,9 +39,14 @@ npm run dev   http://127.0.0.1:8888
 #Linux虚拟机的开机账户，密码
 root   123456
 
+#并发压力测试，apache haus 命令  D:\apache-haus\Apache24\bin
+先开启，输入  httpd.exe    c代表并发数  n代表请求数
+abs或者ab -c 200 -n 1000 http://www.mall.com/lock
+
 #Linux的ip地址
-192.168.157.130
+192.168.157.130   centos7的ip地址：192.168.1.73   ip addr
 windows 192.168.94.44
+00 0c:29:ba bb 43
 
 #nginx 的启动方式Linux   
 去 /usr/local/nginx/sbin写入命令
@@ -54,12 +60,24 @@ root       2269   1944  0 16:50 pts/0    00:00:00 grep nginx
 #nginx的启动方式Windows
 D:\day01Movie\leiyou_tools\nginx-1.12.2
 start nginx.exe
-nginx.exe -s stop  ， nginx.exe -s quit停止
+nginx.exe -s stop  ， nginx.exe -s QUIT停止
 nginx.exe -s reload    重新载入Nginx
+
+#elasticsearch 用su es命令切换用户  cd /opt/es/elasticsearch-6.3.1/bin   http://192.168.157.131:9200/
+启动用nohup ./elasticsearch  讲控制台日志输出到nohup.out文件中
+ps -ef|grep elasticsearch
+
+#kibana 相当于Navicat， 连接es的客户端
+http://192.168.157.131:5601
+ ps -ef|grep node
+xpack.security.enabled: false 
+配置es集群后，必须都启动，才能启动kibana
+
 
 #关于redis  用Java程序连接时一定要使用密码
 cd /usr/local/redis/bin  ./redis-cli -h 192.168.157.130 -p 6379 -a 123456  在客户端上连接redis服务端 在连接后用shutdown命令关闭redis服务端
 cd /usr/lccal/redis  ./bin/redis-server ./redis.conf  加载redis配置文件并开启redis服务端
+ps -ef|grep redis
 
 #关于zookeeper
 ps -ef|grep zookeeper 出现一段很长的文字表示服务已经启动
