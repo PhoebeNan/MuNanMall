@@ -57,6 +57,8 @@ root       2266      1  0 16:50 ?        00:00:00 nginx: master process ./nginx
 nobody     2267   2266  0 16:50 ?        00:00:00 nginx: worker process
 root       2269   1944  0 16:50 pts/0    00:00:00 grep nginx
 
+访问fastdfs服务器之前，必须启动Linux上的nginx服务器
+
 #nginx的启动方式Windows
 D:\day01Movie\leiyou_tools\nginx-1.12.2
 start nginx.exe
