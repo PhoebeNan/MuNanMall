@@ -67,7 +67,9 @@ public class SpuProductImpl implements SpuProductService {
             //保存销售属性值
             List<PmsProductSaleAttrValue> spuSaleAttrValueList = pmsProductSaleAttr.getSpuSaleAttrValueList();
             for (PmsProductSaleAttrValue pmsProductSaleAttrValue : spuSaleAttrValueList) {
+
                 pmsProductSaleAttrValue.setProductId(productInfoId);
+
                 pmsProductSaleAttrValueMapper.insertSelective(pmsProductSaleAttrValue);
             }
         }

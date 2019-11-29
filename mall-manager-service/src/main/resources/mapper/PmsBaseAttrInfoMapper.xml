@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyn.mall.manager.mapper.PmsBaseAttrInfoMapper">
+    <select id="selectAttrInfoListByValueIdFormDb" resultMap="selectAttrInfoListByValueIdFormDbMap">
+		SELECT
+			ai.*,ai.id as ai_id,av.*,av.id as av_id
+		FROM
+			pms_base_attr_info ai,
+			pms_base_attr_value av
+		WHERE
+			ai.id = av.attr_id
+		AND av.id IN ( ${valueIdStr} )
+    </select>
+	
+	<resultMap id="selectAttrInfoListByValueIdFormDbMap" type="com.zyn.mall.api.bean.base.PmsBaseAttrInfo"
+			   autoMapping="true">
+		<result column="ai_id" property="id"/>
+
+		<collection property="attrValueList" ofType="com.zyn.mall.api.bean.base.PmsBaseAttrValue"
+					autoMapping="true">
+			<result column="av_id" property="id"/>
+		</collection>
+	</resultMap>
+</mapper>

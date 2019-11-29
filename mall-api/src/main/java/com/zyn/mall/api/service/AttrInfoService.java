@@ -3,6 +3,7 @@ package com.zyn.mall.api.service;
 import com.zyn.mall.api.bean.base.PmsBaseAttrInfo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author zhaoyanan
@@ -23,4 +24,11 @@ public interface AttrInfoService {
      * @return
      */
     String saveAttrInfo(PmsBaseAttrInfo pmsBaseAttrInfo);
+
+    /**
+     * 传入从es中查询出来的所有sku的id的set集合，得到平台属性列表集合
+     * @param set
+     * @return
+     */
+    List<PmsBaseAttrInfo> getAttrInfoListByValueIdFormDb(Set<String> set);
 }

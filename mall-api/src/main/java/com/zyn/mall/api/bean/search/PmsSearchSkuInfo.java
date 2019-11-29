@@ -16,7 +16,7 @@ import java.util.List;
 public class PmsSearchSkuInfo implements Serializable {
 
     @Id
-    private String id;
+    private long id;
     private String skuName;
     private String skuDesc;
     private String catalog3Id;

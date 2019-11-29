@@ -96,6 +96,10 @@ public class MallSearchServiceApplicationTests {
         }
     }
 
+    /**
+     * 向es数据库中导入mysql数据库中的商品数据
+     */
+    @Test
     public void put(){
         //从mysql中查询出sku商品全部数据
         List<PmsSkuInfo> skuInfos = skuInfoService.getSkuAll("61");
@@ -107,13 +111,15 @@ public class MallSearchServiceApplicationTests {
 
             PmsSearchSkuInfo pmsSearchSkuInfo = new PmsSearchSkuInfo();
             BeanUtils.copyProperties(skuInfo, pmsSearchSkuInfo);
+
+            pmsSearchSkuInfo.setId(Long.parseLong(skuInfo.getId()));
             pmsSearchSkuInfos.add(pmsSearchSkuInfo);
         }
 
         //导入es
         for (PmsSearchSkuInfo pmsSearchSkuInfo : pmsSearchSkuInfos) {
             //index:对应es的索引,type对应es中的表名
-            Index build = new Index.Builder(pmsSearchSkuInfo).index("gmall0105").type("PmsSkuInfo").id(pmsSearchSkuInfo.getId()).build();
+            Index build = new Index.Builder(pmsSearchSkuInfo).index("gmall0105").type("PmsSkuInfo").id(pmsSearchSkuInfo.getId()+"").build();
             try {
                 jestClient.execute(build);
             } catch (IOException e) {

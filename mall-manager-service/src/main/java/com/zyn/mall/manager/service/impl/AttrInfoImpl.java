@@ -12,6 +12,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author zhaoyanan
@@ -31,7 +32,9 @@ public class AttrInfoImpl implements AttrInfoService {
 
         Example example = new Example(PmsBaseAttrInfo.class);
         example.createCriteria().andEqualTo("catalog3Id", catalog3Id);
+
         List<PmsBaseAttrInfo> pmsBaseAttrInfoList = pmsBaseAttrInfoMapper.selectByExample(example);
+
         List<PmsBaseAttrValue> pmsBaseAttrValueList = new ArrayList<PmsBaseAttrValue>();
 
         for (PmsBaseAttrInfo pmsBaseAttrInfo : pmsBaseAttrInfoList) {
@@ -79,6 +82,16 @@ public class AttrInfoImpl implements AttrInfoService {
         }
 
         return "success";
+    }
+
+    @Override
+    public List<PmsBaseAttrInfo> getAttrInfoListByValueIdFormDb(Set<String> set) {
+
+        //得到所有平台属性的id值
+        String valueIdStr = StringUtils.join(set, ",");
+        List<PmsBaseAttrInfo> pmsBaseAttrInfos= pmsBaseAttrInfoMapper.selectAttrInfoListByValueIdFormDb(valueIdStr);
+
+        return pmsBaseAttrInfos;
     }
 
     private void insertAttrAndValue(PmsBaseAttrInfo pmsBaseAttrInfo, String attrInfoId) {

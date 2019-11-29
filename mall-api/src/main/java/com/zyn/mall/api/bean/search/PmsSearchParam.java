@@ -1,10 +1,8 @@
 package com.zyn.mall.api.bean.search;
 
-import com.zyn.mall.api.bean.sku.PmsSkuAttrValue;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author zhaoyanan
@@ -15,5 +13,7 @@ public class PmsSearchParam implements Serializable {
 
     private String catalog3Id;
     private String keyword;
-    private List<PmsSkuAttrValue> skuAttrValueList;
+
+    //pms_base_attr_value表中的id值
+    private String[] valueId;
 }
