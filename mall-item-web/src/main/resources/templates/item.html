@@ -265,7 +265,7 @@
 
                 <div class="box-btns clear">
                     <div class="box-btns-one">
-                        <form id="itemForm" action="http://cart.mall.com:8087/addToCart" method="post">
+                        <form id="itemForm" action="http://cart.mall.com:8084/addToCart" method="post">
                             <input type="text" name="num" id="" value="1"/>
                             <input type="hidden" name="skuId" th:value="${skuInfo?.id}"/>
 
@@ -1059,7 +1059,7 @@
         var valuesSku_JsonMap = JSON.parse(valuesSkuJson);
         var v_sku = valuesSku_JsonMap[k];
         if(v_sku){
-            window.location.href="http://item.mall.com/"+v_sku+".html";
+            window.location.href="http://item.mall.com:8082/"+v_sku+".html";
         }
 
     }

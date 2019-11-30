@@ -62,8 +62,13 @@ public class SearchController {
         //得到地址栏url中平台属性值的id
         String[] valueIds = pmsSearchParam.getValueId();
 
+
         //使用迭代器作为游标
         Iterator<PmsBaseAttrInfo> iterator = pmsBaseAttrInfos.iterator();
+
+
+        //在删除属性组的同时就把面包屑功能做出来
+        List<PmsSearchCrumb> pmsSearchCrumbs = new ArrayList<>();
 
         if (valueIds != null) {
             while (iterator.hasNext()) {
@@ -73,8 +78,20 @@ public class SearchController {
                 for (PmsBaseAttrValue pmsBaseAttrValue : attrValueList) {
                     String valueId1 = pmsBaseAttrValue.getId();
 
+
+                    //如果delvalueIds不为空，说明请求中包含属性的参数，每一个属性属性参数，都会生成一个面包屑
                     for (String valueId : valueIds) {
                         if (valueId.equals(valueId1)) {
+
+                            PmsSearchCrumb pmsSearchCrumb = new PmsSearchCrumb();
+                            pmsSearchCrumb.setValueId(valueId1);
+
+                            //平台属性值的名字
+                            String valueName = pmsBaseAttrValue.getValueName();
+                            pmsSearchCrumb.setValueName(valueName);
+
+                            pmsSearchCrumb.setUrlParam(getUrlParm(pmsSearchParam, valueId1));
+                            pmsSearchCrumbs.add(pmsSearchCrumb);
 
                             iterator.remove();
                         }
@@ -82,11 +99,12 @@ public class SearchController {
 
                 }
             }
+
         }
 
 
         //<li  th:each="attrValue:${attrInfo.attrValueList}"><a th:href="'/list.html?'+${urlParam}+'&valueId='+${attrValue.id}"  th:text="${attrValue.valueName}">属性值</a></li>
-        String urlParam = getUrlParm(pmsSearchParam,null);
+        String urlParam = getUrlParm(pmsSearchParam, null);
         modelMap.addAttribute("urlParam", urlParam);
 
         String keyword = pmsSearchParam.getKeyword();
@@ -95,20 +113,21 @@ public class SearchController {
         }
 
 
-        //面包屑功能
-        List<PmsSearchCrumb> pmsSearchCrumbs = new ArrayList<>();
-        String[] delvalueIds = pmsSearchParam.getValueId();
-        if (delvalueIds != null) {
-
-            //如果delvalueIds不为空，说明请求中包含属性的参数，每一个属性属性参数，都会生成一个面包屑
-            for (String delvalueId : delvalueIds) {
-                PmsSearchCrumb pmsSearchCrumb = new PmsSearchCrumb();
-                pmsSearchCrumb.setValueId(delvalueId);
-                pmsSearchCrumb.setValueName(delvalueId);
-                pmsSearchCrumb.setUrlParam(getUrlParm(pmsSearchParam, delvalueId));
-                pmsSearchCrumbs.add(pmsSearchCrumb);
-            }
-        }
+//        //面包屑功能  与删除属性值进行合并
+//        List<PmsSearchCrumb> pmsSearchCrumbs = new ArrayList<>();
+//        String[] delvalueIds = pmsSearchParam.getValueId();
+//        if (delvalueIds != null) {
+//
+//            //如果delvalueIds不为空，说明请求中包含属性的参数，每一个属性属性参数，都会生成一个面包屑
+//            for (String delvalueId : delvalueIds) {
+//                PmsSearchCrumb pmsSearchCrumb = new PmsSearchCrumb();
+//                pmsSearchCrumb.setValueId(delvalueId);
+//
+//                pmsSearchCrumb.setValueName(delvalueId);
+//                pmsSearchCrumb.setUrlParam(getUrlParm(pmsSearchParam, delvalueId));
+//                pmsSearchCrumbs.add(pmsSearchCrumb);
+//            }
+//        }
 
         modelMap.addAttribute("attrValueSelectedList", pmsSearchCrumbs);
 
@@ -141,15 +160,16 @@ public class SearchController {
         if (skuAttrValueList != null) {
             if (delvalueId != null) {
                 for (String valueId : skuAttrValueList) {
-                    if (!valueId.equals(delvalueId)) {
+                    for (String s : delvalueId) {
+                        if (!valueId.equals(s)) {
 
-                        builder.append("&valueId=" + valueId);
+                            builder.append("&valueId=" + valueId);
+                        }
                     }
-
                 }
-            }else {
+            } else {
                 for (String valueId : skuAttrValueList) {
-                        builder.append("&valueId=" + valueId);
+                    builder.append("&valueId=" + valueId);
 
                 }
             }

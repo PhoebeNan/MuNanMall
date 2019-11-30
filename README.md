@@ -27,6 +27,11 @@
 #mall-search-service 商品搜索服务的service层
 8073
 
+#mall-cart-web 商品购物车服务的web层
+8083
+#mall-cart-service 商品购物车服务的service层
+8073
+
 #已经提交github上的不必要文件，可以用的命令：
 git rm -r --cached idea
 

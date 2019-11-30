@@ -198,6 +198,8 @@
                       <div style="width:215px" th:each="skuLsInfo:${skuLsInfoList}" >
                             <p class="da">
                                 <a href="#" th:onclick="'javascript:item(\''+${skuLsInfo.id}+'\')'">
+<!--                                    "http://item.mall.com:8082/"+skuid+".html";    -->
+<!--                                <a th:href="'http://item.mall.com:8082/'+${skuLsInfo.id}+'.html'">-->
                                     <img th:src="${skuLsInfo.skuDefaultImg}"   src="/list/img/57d0d400nfd249af4.jpg" class="dim">
                                 </a>
                             </p>
@@ -400,8 +402,9 @@
 <script src="/list/js/index.js"></script>
 <script language="JavaScript">
     function item(skuid) {
-        console.log("skuid:"+skuid);
-        window.location.href="http://item.mall.com:8084/"+skuid+".html";
+        // console.log("skuid:"+skuid);
+        // alert(skuid);
+        window.location.href="http://item.mall.com:8082/"+skuid+".html";
     }
 
     function searchList(){
