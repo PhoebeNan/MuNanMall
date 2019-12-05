@@ -3,6 +3,7 @@ package com.zyn.mall.api.bean.cart;
 import lombok.Data;
 
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,7 +17,7 @@ public class OmsCartItem implements Serializable{
     private String productSkuId;
     private String memberId;
     private BigDecimal quantity;  //添加到购物车的商品数量
-    private BigDecimal price; //添加到购物车的价格
+    private BigDecimal price; //添加到购物车的单价
     private String sp1;
     private String sp2;
     private String sp3;
@@ -32,5 +33,10 @@ public class OmsCartItem implements Serializable{
     private String productBrand;  //商品的商标
     private String productSn; //商品sku的sn码
     private String productAttr; //商品销售属性的json字符串
+
+    private String isChecked; //商品是否被选中
+
+    @Transient
+    private BigDecimal totalPrice; //商品的总价
 
 }

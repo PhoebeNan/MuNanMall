@@ -28,9 +28,14 @@
 8073
 
 #mall-cart-web 商品购物车服务的web层
-8083
+8084
 #mall-cart-service 商品购物车服务的service层
-8073
+8074
+
+#mall-passport-web 用户认证中心服务的web层
+8085
+#mall-user-service 用户认证中心服务的service层
+8075 
 
 #已经提交github上的不必要文件，可以用的命令：
 git rm -r --cached idea

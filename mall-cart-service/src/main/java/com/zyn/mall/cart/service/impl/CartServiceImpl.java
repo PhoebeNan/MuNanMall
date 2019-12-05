@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,12 +68,16 @@ public class CartServiceImpl implements CartService {
             Map<String, String> cartMapValue = new HashMap<>();
             for (OmsCartItem cartItem : omsCartItems) {
 
+                //在redis缓存中解决商品价格
+                cartItem.setTotalPrice(cartItem.getPrice().multiply(cartItem.getQuantity()));
+
                 //设置map中的键和值
                 cartMapValue.put(cartItem.getProductSkuId(), JSON.toJSONString(cartItem));
             }
 
             //设置map的键
             String cartMapKey = "user:" + memberId + ":cart";
+            jedis.del(cartMapKey);
             jedis.hmset(cartMapKey,cartMapValue);
 
         } catch (Exception e) {
@@ -80,6 +85,52 @@ public class CartServiceImpl implements CartService {
         } finally {
             jedis.close();
         }
+
+    }
+
+    @Override
+    public List<OmsCartItem> cartList(String userId) {
+
+        List<OmsCartItem> list = new ArrayList<>();
+        Jedis jedis =null;
+        try {
+            jedis = redisUtils.getJedis();
+
+            //设置map的键
+            String cartMapKey = "user:" + userId + ":cart";
+            List<String> cartItemsList = jedis.hvals(cartMapKey);
+
+            for (String cartItem : cartItemsList) {
+
+                OmsCartItem omsCartItem = JSON.parseObject(cartItem, OmsCartItem.class);
+                list.add(omsCartItem);
+            }
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            //目的是若发生异常了，controller层不会一直等service层返回结果
+            return null;
+        } finally {
+            jedis.close();
+        }
+
+        return list;
+    }
+
+    @Override
+    public void checkCart(OmsCartItem omsCartItem) {
+
+        //在db中更新购物车页面商品的选中状态
+        Example example = new Example(OmsCartItem.class);
+        example.createCriteria().andEqualTo("memberId",omsCartItem.getMemberId())
+                .andEqualTo("productSkuId", omsCartItem.getProductSkuId());
+        cartServiceMapper.updateByExampleSelective(omsCartItem, example);
+
+        //同步到缓存
+        flushCartCache(omsCartItem.getMemberId());
 
     }
 }

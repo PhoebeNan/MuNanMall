@@ -2,6 +2,7 @@ package com.zyn.mall.cart.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
+import com.zyn.mall.annotations.LoginRequired;
 import com.zyn.mall.api.bean.cart.OmsCartItem;
 import com.zyn.mall.api.bean.sku.PmsSkuInfo;
 import com.zyn.mall.api.service.CartService;
@@ -9,6 +10,7 @@ import com.zyn.mall.api.service.PmsSkuInfoService;
 import com.zyn.mall.utils.CookieUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,13 +36,98 @@ public class CartController {
     @Reference
     private CartService cartService;
 
-    @RequestMapping("cartList")
-    public String cartList() {
+    @RequestMapping("toTrade")
+    @LoginRequired
+    public String toTrade(ModelMap modelMap) {
 
-        return null;
+        return "toTradeTest";
+    }
+
+    @RequestMapping("checkCart")
+    @LoginRequired(loginSuccess = false)
+    public String checkCart(String isChecked, String skuId, ModelMap modelMap) {
+
+        //用户的id
+        String memberId = "1";
+
+        //调用服务，修改选中状态
+        OmsCartItem omsCartItem = new OmsCartItem();
+        omsCartItem.setMemberId(memberId);
+        omsCartItem.setProductSkuId(skuId);
+        omsCartItem.setIsChecked(isChecked);
+
+        cartService.checkCart(omsCartItem);
+
+        //将最新的数据从缓存中查出，渲染到内嵌页
+        List<OmsCartItem> omsCartItems = cartService.cartList(memberId);
+
+        modelMap.put("cartList", omsCartItems);
+
+        //结算总价格
+        BigDecimal totalAccount = getTotalAccount(omsCartItems);
+        modelMap.put("totalAccount", totalAccount);
+
+        return "cartListInner";
+
+    }
+
+    @RequestMapping("cartList")
+    @LoginRequired(loginSuccess = false)
+    public String cartList(HttpServletRequest request, ModelMap modelMap) {
+
+        List<OmsCartItem> omsCartItems = new ArrayList<>();
+        //设置浏览器cookie中的键
+        String cookieKey = "cartListCookie";
+
+        //用户的id
+        String memberId = "1";
+        if (StringUtils.isNotBlank(memberId)) {
+
+            //用户已经登录,调用购物车服务，从redis缓存中查询购物车信息
+            omsCartItems = cartService.cartList(memberId);
+
+        } else {
+
+            //用户没有登录，从浏览器cookie中查询
+            String cookieValue = CookieUtil.getCookieValue(request, cookieKey, true);
+            if (StringUtils.isNotBlank(cookieValue)) {
+                omsCartItems = JSON.parseArray(cookieValue, OmsCartItem.class);
+            }
+        }
+
+        for (OmsCartItem omsCartItem : omsCartItems) {
+            omsCartItem.setTotalPrice(omsCartItem.getPrice().multiply(omsCartItem.getQuantity()));
+        }
+
+        modelMap.put("cartList", omsCartItems);
+
+        //结算总价格
+        BigDecimal totalAccount = getTotalAccount(omsCartItems);
+        modelMap.put("totalAccount", totalAccount);
+
+        return "cartList";
+    }
+
+    /**
+     * 返回勾选后的结算价格
+     * @param omsCartItems
+     * @return
+     */
+    private BigDecimal getTotalAccount(List<OmsCartItem> omsCartItems) {
+
+        BigDecimal bigDecimal = new BigDecimal("0");
+        for (OmsCartItem omsCartItem : omsCartItems) {
+
+            if(omsCartItem.getIsChecked().equals("1")){
+
+                bigDecimal = bigDecimal.add(omsCartItem.getTotalPrice());
+            }
+        }
+        return bigDecimal;
     }
 
     @RequestMapping("addToCart")
+    @LoginRequired(loginSuccess = false)
     public String addToCart(@RequestParam("skuId") String skuId, @RequestParam("quantity") int quantity,
                             HttpServletRequest request, HttpServletResponse response) {
 
@@ -73,12 +160,13 @@ public class CartController {
         //判断用户是否登录
         String memberId = "1";
 
+        //设置浏览器cookie中的键
+        String cookieKey = "cartListCookie";
+
         if (StringUtils.isBlank(memberId)) {
 
             //用户没有登录
 
-            //设置浏览器cookie中的键
-            String cookieKey = "cartListCookie";
 
             //设置此cookie的过期时间
             int cookieMaxAge = 60 * 60 * 24 * 3;

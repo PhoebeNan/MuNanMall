@@ -178,7 +178,7 @@ public class SearchController {
         return builder.toString();
     }
 
-    @RequestMapping("/search")
+    @RequestMapping("/index")
     public String searchIndex() {
 
         return "index";
