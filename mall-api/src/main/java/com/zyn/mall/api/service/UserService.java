@@ -1,8 +1,8 @@
 package com.zyn.mall.api.service;
 
 
-import com.zyn.mall.api.bean.UmsMember;
-import com.zyn.mall.api.bean.UmsMemberReceiveAddress;
+import com.zyn.mall.api.bean.user.UmsMember;
+import com.zyn.mall.api.bean.user.UmsMemberReceiveAddress;
 
 import java.util.List;
 

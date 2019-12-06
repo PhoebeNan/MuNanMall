@@ -1,4 +1,4 @@
-package com.zyn.mall.api.bean;
+package com.zyn.mall.api.bean.user;
 
 import lombok.Data;
 

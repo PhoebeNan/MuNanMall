@@ -1,8 +1,8 @@
 package com.zyn.mall.user.serviceimpl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.zyn.mall.api.bean.UmsMember;
-import com.zyn.mall.api.bean.UmsMemberReceiveAddress;
+import com.zyn.mall.api.bean.user.UmsMember;
+import com.zyn.mall.api.bean.user.UmsMemberReceiveAddress;
 import com.zyn.mall.api.service.UserService;
 import com.zyn.mall.user.mapper.UmsMemberReceiveAddressMapper;
 import com.zyn.mall.user.mapper.UserMapper;

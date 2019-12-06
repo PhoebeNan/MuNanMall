@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zyn.mall.user.mapper.UserMapper">
-    <select id="selectAllUser" resultType="com.zyn.mall.api.bean.UmsMember">
+    <select id="selectAllUser" resultType="com.zyn.mall.api.bean.user.UmsMember">
         select t.* from ums_member t;
     </select>
 </mapper>

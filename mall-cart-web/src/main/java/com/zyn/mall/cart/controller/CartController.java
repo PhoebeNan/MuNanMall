@@ -38,17 +38,22 @@ public class CartController {
 
     @RequestMapping("toTrade")
     @LoginRequired
-    public String toTrade(ModelMap modelMap) {
+    public String toTrade(HttpServletRequest request,ModelMap modelMap) {
+
+        String memberId = (String) request.getAttribute("memberId");
+        String memberNickname = (String) request.getAttribute("memberNickname");
 
         return "toTradeTest";
     }
 
     @RequestMapping("checkCart")
     @LoginRequired(loginSuccess = false)
-    public String checkCart(String isChecked, String skuId, ModelMap modelMap) {
+    public String checkCart(HttpServletRequest request,String isChecked, String skuId, ModelMap modelMap) {
 
         //用户的id
         String memberId = "1";
+        request.getAttribute("memberId");
+        request.getAttribute("memberNickname");
 
         //调用服务，修改选中状态
         OmsCartItem omsCartItem = new OmsCartItem();

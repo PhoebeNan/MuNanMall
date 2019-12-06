@@ -13,10 +13,8 @@ public class JwtUtil {
         JwtBuilder jwtBuilder = Jwts.builder().signWith(SignatureAlgorithm.HS256,key);
 
         jwtBuilder = jwtBuilder.setClaims(param);
-
         String token = jwtBuilder.compact();
         return token;
-
     }
 
 

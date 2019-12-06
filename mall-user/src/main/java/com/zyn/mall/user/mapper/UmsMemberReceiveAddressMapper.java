@@ -1,6 +1,6 @@
 package com.zyn.mall.user.mapper;
 
-import com.zyn.mall.api.bean.UmsMemberReceiveAddress;
+import com.zyn.mall.api.bean.user.UmsMemberReceiveAddress;
 import tk.mybatis.mapper.common.Mapper;
 
 /**

@@ -1,7 +1,7 @@
 package com.zyn.mall.user.mapper;
 
 
-import com.zyn.mall.api.bean.UmsMember;
+import com.zyn.mall.api.bean.user.UmsMember;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
