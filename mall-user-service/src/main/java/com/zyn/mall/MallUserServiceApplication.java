@@ -1,4 +1,4 @@
-package com.zyn.mall.user;
+package com.zyn.mall;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -29,6 +29,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         LoginRequired loginRequired = handlerMethod.getMethodAnnotation(LoginRequired.class);
 
+        StringBuffer url = request.getRequestURL();
+        System.out.println(url.toString());
         //是否拦截
         if (loginRequired == null) {
             return true; //没有注解@LoginRequired,拦截器不拦截直接放行，可以执行下面的方法
@@ -80,20 +82,26 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             request.setAttribute("memberId", "1");
             request.setAttribute("memberNickname", "会员1");
 
+            //验证通过，覆盖cookie中的token
+            if(StringUtils.isNotBlank(token)){
+                CookieUtil.setCookie(request, response, "oldToken", token, 60 * 60 * 2, true);
+            }
+
         } else {
             //虽被拦截，但是不用登录也可以执行方法，但是必须验证，通过了给用户id，没通过也能放行
             if (success.equals("success")) {
                 //不管验证是否成功,都可以通过，需要将token携带的用户信息写入request域中
                 request.setAttribute("memberId", "1");
                 request.setAttribute("memberNickname", "会员1");
+
+                //验证通过，覆盖cookie中的token
+                if(StringUtils.isNotBlank(token)){
+                    CookieUtil.setCookie(request, response, "oldToken", token, 60 * 60 * 2, true);
+                }
             }
 
         }
 
-        //验证通过，覆盖cookie中的token
-        if(StringUtils.isNotBlank(token)){
-            CookieUtil.setCookie(request, response, "oldToken", token, 60 * 60 * 2, true);
-        }
 
         return true;  //true代表拦截器放行，继续执行程序
     }

@@ -1,6 +1,7 @@
 package com.zyn.mall.search.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.zyn.mall.annotations.LoginRequired;
 import com.zyn.mall.api.bean.base.PmsBaseAttrInfo;
 import com.zyn.mall.api.bean.base.PmsBaseAttrValue;
 import com.zyn.mall.api.bean.crumb.PmsSearchCrumb;
@@ -179,6 +180,7 @@ public class SearchController {
     }
 
     @RequestMapping("/index")
+    @LoginRequired(loginSuccess = false)
     public String searchIndex() {
 
         return "index";

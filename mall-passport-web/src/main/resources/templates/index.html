@@ -36,7 +36,7 @@
 
         <div class="si_bom1 tab" style="display: block;">
             <div class="error">
-                请输入账户名和密码
+
             </div>
 
             <form id="loginForm" action="./login" method="post">
@@ -92,14 +92,26 @@
 
     function submitLogin() {
 
-        var username = $("#username").val();
-        var password = $("#password").val();
+        var username = $("#username").val() || '';
+        var password = $("#password").val()  || '';
         var returnUrl = $("#returnUrl").val();
 
-        $.post("login", {username: username, password: password}, function (token) {
+        if( username == "" || password =="") {
+            $(".error").css("display","block").text("请输入账户名与密码")
+            return;
+        }
 
-            //异步方法ajax得到token，然后根据回调地址访问原始功能
-            window.location.href = returnUrl + "?token=" + token;
+        $.post("login", {username: username, password: password}, function (token) {
+            console.log("token", token)
+            if(token=="fail"){
+                //登录失败，弹出用户名或密码不正确
+                console.log("fail");
+                $(".error").css("display","block").text("账户名与密码不匹配，请重新输入")
+            }else {
+                //异步方法ajax得到token，然后根据回调地址访问原始功能
+                window.location.href = returnUrl + "?token=" + token;
+            }
+
         });
     }
 

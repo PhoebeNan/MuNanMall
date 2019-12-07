@@ -26,4 +26,18 @@ public interface UserService {
      * @return
      */
     List<UmsMemberReceiveAddress> getReceiveAddressByMemberId(String memberId);
+
+    /**
+     * 先从redis中查询用户信息，并验证用户名和密码是否正确
+     * @param umsMember
+     * @return
+     */
+    UmsMember login(UmsMember umsMember);
+
+    /**
+     *将token存入redis一份
+     * @param token
+     * @param userId
+     */
+    void addUserTokenToCache(String token, String userId);
 }

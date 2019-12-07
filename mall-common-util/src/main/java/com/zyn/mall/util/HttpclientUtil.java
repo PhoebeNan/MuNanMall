@@ -16,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author zhaoyanan
+ * @create 2019-11-13-8:21
+ */
 public class HttpclientUtil {
 
     public static String doGet(String url) {
