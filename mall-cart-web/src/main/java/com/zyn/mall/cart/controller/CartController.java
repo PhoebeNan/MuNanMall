@@ -51,14 +51,14 @@ public class CartController {
     public String checkCart(HttpServletRequest request,String isChecked, String skuId, ModelMap modelMap) {
 
         //用户的id
-        String memberId = "1";
-        request.getAttribute("memberId");
-        request.getAttribute("memberNickname");
+        String memberId = (String) request.getAttribute("memberId");
+        String memberNickname = (String) request.getAttribute("memberNickname");
 
         //调用服务，修改选中状态
         OmsCartItem omsCartItem = new OmsCartItem();
         omsCartItem.setMemberId(memberId);
         omsCartItem.setProductSkuId(skuId);
+        omsCartItem.setMemberNickname(memberNickname);
         omsCartItem.setIsChecked(isChecked);
 
         cartService.checkCart(omsCartItem);
@@ -85,7 +85,8 @@ public class CartController {
         String cookieKey = "cartListCookie";
 
         //用户的id
-        String memberId = "1";
+        String memberId = (String) request.getAttribute("memberId");
+        String memberNickname = (String) request.getAttribute("memberNickname");
         if (StringUtils.isNotBlank(memberId)) {
 
             //用户已经登录,调用购物车服务，从redis缓存中查询购物车信息
@@ -163,7 +164,8 @@ public class CartController {
         omsCartItem.setQuantity(new BigDecimal(quantity));
 
         //判断用户是否登录
-        String memberId = "1";
+        String memberId = (String) request.getAttribute("memberId");
+        String memberNickname = (String) request.getAttribute("memberNickname");
 
         //设置浏览器cookie中的键
         String cookieKey = "cartListCookie";

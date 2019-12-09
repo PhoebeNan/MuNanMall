@@ -1,8 +1,10 @@
 package com.zyn.mall.passport.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.zyn.mall.api.bean.user.UmsMember;
 import com.zyn.mall.api.service.UserService;
+import com.zyn.mall.util.MD5Utils;
 import com.zyn.mall.utils.JwtUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -12,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,11 +41,38 @@ public class PassportController {
      */
     @RequestMapping("verify")
     @ResponseBody
-    public String verify(String token) {
+    public String verify(String token, String currentIp) {
 
         //通过jwt校验token的真假
 
-        return "success";
+        Map<String,Object> map = new HashMap<>();
+
+        //通过jwt制作token
+        //jwt服务器部分,通过md5算法加密
+        String key = "MuNanMall";
+        for (int i = 0; i < 621; i++) {
+
+            key = MD5Encode(key, "utf-8");
+        }
+
+        String salt = currentIp;
+        for (int i = 0; i < 621; i++) {
+
+            salt = MD5Utils.MD5Encode(salt,"utf-8");
+        }
+
+        Map<String, Object> decode = JwtUtil.decode(token, key, salt);
+
+        if (decode!=null){
+            map.put("status", "success");
+            map.put("memberId", decode.get("memberId"));
+            map.put("memberNickname", decode.get("memberNickname"));
+        }else {
+            map.put("status", "fail");
+        }
+
+
+        return JSON.toJSONString(map);
     }
 
     /**
@@ -79,34 +106,33 @@ public class PassportController {
             //jwt的私有部分，是用户信息
             Map<String, Object> map = new HashMap<>();
 
-            String userId = umsMember1.getId();
+            String memberId = umsMember1.getId();
             String userNickname = umsMember1.getNickname();
-            map.put("userId", userId);
-            map.put("userNickname", userNickname);
+            map.put("memberId", memberId);
+            map.put("memberNickname", userNickname);
 
             //jwt浏览器客户端部分(盐值)，通过md5算法加密
             //浏览器部分
             String ip = request.getHeader("x-forwarded-for");
-            if(StringUtils.isBlank(ip)){
+            if (StringUtils.isBlank(ip)) {
                 ip = request.getRemoteAddr();
-                if(StringUtils.isBlank(ip)){
+                if (StringUtils.isBlank(ip)) {
                     ip = "127.0.0.1";
                 }
             }
-            String time = new SimpleDateFormat("yyyy-MM-DD:HH:mm:ss").format(new Date());
-            String salt = ip+time;
+            String salt = ip;
 
             for (int i = 0; i < 621; i++) {
 
-                salt = MD5Encode(salt, "utf-8");
-            }
+                salt = MD5Utils.MD5Encode(salt, "utf-8");
+            }//380adba  44fa
 
             //通过jwt获取token
             token = JwtUtil.encode(key, map, salt);
 
 
             //将token存入redis一份
-            userService.addUserTokenToCache(token,userId);
+            userService.addUserTokenToCache(token, memberId);
 
         } else {
             //登录失败

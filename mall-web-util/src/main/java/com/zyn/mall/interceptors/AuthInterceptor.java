@@ -1,5 +1,6 @@
 package com.zyn.mall.interceptors;
 
+import com.alibaba.fastjson.JSON;
 import com.zyn.mall.annotations.LoginRequired;
 import com.zyn.mall.util.HttpclientUtil;
 import com.zyn.mall.utils.CookieUtil;
@@ -10,6 +11,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author zhaoyanan
@@ -58,11 +61,26 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         boolean loginSuccess = loginRequired.loginSuccess();
 
         //调用认证中心进行验证
-        String success = "fail";
+        String success = "failx";
+        Map<String, String> jsonMap = new HashMap<>();
         if (StringUtils.isNotBlank(token)) {
 
+            //jwt浏览器客户端部分(盐值)，通过md5算法加密
+            //浏览器部分
+            String ip = request.getHeader("x-forwarded-for");
+            if (StringUtils.isBlank(ip)) {
+                ip = request.getRemoteAddr();
+                if (StringUtils.isBlank(ip)) {
+                    ip = "127.0.0.1";
+                }
+            }
+
             //目的是验证token中的用户身份信息是否有效
-            success = HttpclientUtil.doGet("http://passport.mall.com:8085/verify?token=" + token);
+            String successJson = HttpclientUtil.doGet("http://passport.mall.com:8085/verify?token=" + token + "&currentIp=" + ip);
+            jsonMap = JSON.parseObject(successJson, Map.class);
+
+            success = jsonMap.get("status");
+
         }
 
 
@@ -79,11 +97,11 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             }
             //验证通过，合法，覆盖cookie中的token
             //需要将token携带的用户信息写入
-            request.setAttribute("memberId", "1");
-            request.setAttribute("memberNickname", "会员1");
+            request.setAttribute("memberId", jsonMap.get("memberId"));
+            request.setAttribute("memberNickname", jsonMap.get("memberNickname"));
 
             //验证通过，覆盖cookie中的token
-            if(StringUtils.isNotBlank(token)){
+            if (StringUtils.isNotBlank(token)) {
                 CookieUtil.setCookie(request, response, "oldToken", token, 60 * 60 * 2, true);
             }
 
@@ -91,11 +109,11 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             //虽被拦截，但是不用登录也可以执行方法，但是必须验证，通过了给用户id，没通过也能放行
             if (success.equals("success")) {
                 //不管验证是否成功,都可以通过，需要将token携带的用户信息写入request域中
-                request.setAttribute("memberId", "1");
-                request.setAttribute("memberNickname", "会员1");
+                request.setAttribute("memberId", jsonMap.get("memberId"));
+                request.setAttribute("memberNickname", jsonMap.get("memberNickname"));
 
                 //验证通过，覆盖cookie中的token
-                if(StringUtils.isNotBlank(token)){
+                if (StringUtils.isNotBlank(token)) {
                     CookieUtil.setCookie(request, response, "oldToken", token, 60 * 60 * 2, true);
                 }
             }
