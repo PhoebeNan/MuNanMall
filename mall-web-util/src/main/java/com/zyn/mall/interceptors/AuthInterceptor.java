@@ -12,6 +12,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -76,7 +77,10 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             }
 
             //目的是验证token中的用户身份信息是否有效
-            String successJson = HttpclientUtil.doGet("http://passport.mall.com:8085/verify?token=" + token + "&currentIp=" + ip);
+            List<String> success_Jsons = HttpclientUtil.doGet("http://passport.mall.com:8085/verify?token=" + token + "&currentIp=" + ip);
+
+            String successJson = success_Jsons.get(0);
+
             jsonMap = JSON.parseObject(successJson, Map.class);
 
             success = jsonMap.get("status");
@@ -119,7 +123,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
             }
 
         }
-
 
         return true;  //true代表拦截器放行，继续执行程序
     }

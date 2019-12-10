@@ -54,6 +54,8 @@
                     <li class="bri">
                         <a href="">忘记密码</a>
                     </li>
+
+
                     <li class="ent">
                         <button id="btn2" type="button" class="btn2"><a href="javascript:submitLogin();" class="a">登
                             &nbsp; &nbsp;录</a></button>
@@ -62,13 +64,27 @@
                 </ul>
                 <input type="hidden" id="originUrl" name="originUrl" th:value="${originUrl}"/>
             </form>
+
         </div>
         <div class="si_out">
-
             <h5 class="rig">
                 <img src="/img/4de5019d2404d347897dee637895d02b_25.png"/>
                 <span><a href="#">立即注册</a></span>
             </h5>
+        </div>
+        <div class="more-sign">
+            <h6>社交帐号登录</h6>
+            <ul>
+                <li>
+                    <a class="weibo" id="weibo-link" href="">
+                        <i class="iconfont ic-weibo"></i>
+                    </a>
+                </li>
+                <li><a id="weixin" class="weixin" target="_blank" href="/users/auth/wechat"><i
+                        class="iconfont ic-wechat"></i></a></li>
+                <li><a id="qq" class="qq" target="_blank" href="/users/auth/qq_connect"><i
+                        class="iconfont ic-qq_connect"></i></a></li>
+            </ul>
         </div>
     </div>
 </div>
@@ -76,7 +92,7 @@
 
 <!--底部-->
 
-<input type="text" id="returnUrl" th:value="${returnUrl}"/>
+<input type="text" id="returnUrl" th:value="${returnUrl}" hidden/>
 </body>
 <script language="JavaScript">
 
@@ -93,21 +109,21 @@
     function submitLogin() {
 
         var username = $("#username").val() || '';
-        var password = $("#password").val()  || '';
+        var password = $("#password").val() || '';
         var returnUrl = $("#returnUrl").val();
 
-        if( username == "" || password =="") {
-            $(".error").css("display","block").text("请输入账户名与密码")
+        if (username == "" || password == "") {
+            $(".error").css("display", "block").text("请输入账户名与密码")
             return;
         }
 
         $.post("login", {username: username, password: password}, function (token) {
             console.log("token", token)
-            if(token=="fail"){
+            if (token == "fail") {
                 //登录失败，弹出用户名或密码不正确
                 console.log("fail");
-                $(".error").css("display","block").text("账户名与密码不匹配，请重新输入")
-            }else {
+                $(".error").css("display", "block").text("账户名与密码不匹配，请重新输入")
+            } else {
                 //异步方法ajax得到token，然后根据回调地址访问原始功能
                 window.location.href = returnUrl + "?token=" + token;
             }
