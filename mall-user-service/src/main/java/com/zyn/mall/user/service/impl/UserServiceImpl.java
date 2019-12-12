@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     public List<UmsMemberReceiveAddress> getReceiveAddressByMemberId(String memberId) {
 
         Example example = new Example(UmsMemberReceiveAddress.class);
-        example.createCriteria().andEqualTo("memberId",memberId);
+        example.createCriteria().andEqualTo("memberId", memberId);
         List<UmsMemberReceiveAddress> UmsMemberReceiveAddress =
                 umsMemberReceiveAddressMapper.selectByExample(example);
         return UmsMemberReceiveAddress;
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
         //从redis中查询用户信息
         Jedis jedis = null;
-        String redisKey = "user:" + umsMember.getPassword() + ":info";
+        String redisKey = "user:" + umsMember.getPassword() + umsMember.getUsername() + ":info";
 
         try {
             jedis = redisUtils.getJedis();
@@ -95,22 +95,37 @@ public class UserServiceImpl implements UserService {
 
         try {
             jedis = redisUtils.getJedis();
-            jedis.setex(tokenKey, 60*60*4, token);
+            jedis.setex(tokenKey, 60 * 60 * 4, token);
         } finally {
             jedis.close();
         }
 
     }
 
+    @Override
+    public UmsMember addAuthUserToDb(UmsMember umsMember) {
+        userMapper.insertSelective(umsMember);
+
+        return umsMember;
+    }
+
+    @Override
+    public UmsMember checkAuthUser(UmsMember checkUser) {
+
+        UmsMember umsMember = userMapper.selectOne(checkUser);
+        return umsMember;
+    }
+
     /**
      * redis缓存中没有或redis宕机了，从数据库中查询用户信息
+     *
      * @param umsMember
      * @return
      */
     private UmsMember umsMemberFromDb(UmsMember umsMember) {
 
         List<UmsMember> umsMembers = userMapper.select(umsMember);
-        if (umsMembers!=null && umsMembers.size() > 0 ){
+        if (umsMembers != null && umsMembers.size() > 0) {
             return umsMembers.get(0);
         }
 

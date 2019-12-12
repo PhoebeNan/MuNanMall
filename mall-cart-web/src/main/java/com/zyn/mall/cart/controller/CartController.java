@@ -36,19 +36,10 @@ public class CartController {
     @Reference
     private CartService cartService;
 
-    @RequestMapping("toTrade")
-    @LoginRequired
-    public String toTrade(HttpServletRequest request,ModelMap modelMap) {
-
-        String memberId = (String) request.getAttribute("memberId");
-        String memberNickname = (String) request.getAttribute("memberNickname");
-
-        return "toTradeTest";
-    }
 
     @RequestMapping("checkCart")
     @LoginRequired(loginSuccess = false)
-    public String checkCart(HttpServletRequest request,String isChecked, String skuId, ModelMap modelMap) {
+    public String checkCart(HttpServletRequest request, String isChecked, String skuId, ModelMap modelMap) {
 
         //用户的id
         String memberId = (String) request.getAttribute("memberId");
@@ -108,6 +99,7 @@ public class CartController {
         modelMap.put("cartList", omsCartItems);
 
         //结算总价格
+
         BigDecimal totalAccount = getTotalAccount(omsCartItems);
         modelMap.put("totalAccount", totalAccount);
 
@@ -116,17 +108,20 @@ public class CartController {
 
     /**
      * 返回勾选后的结算价格
+     *
      * @param omsCartItems
      * @return
      */
     private BigDecimal getTotalAccount(List<OmsCartItem> omsCartItems) {
 
         BigDecimal bigDecimal = new BigDecimal("0");
+
         for (OmsCartItem omsCartItem : omsCartItems) {
+            if (StringUtils.isNotBlank(omsCartItem.getIsChecked())) {
+                if (omsCartItem.getIsChecked().equals("1")) {
 
-            if(omsCartItem.getIsChecked().equals("1")){
-
-                bigDecimal = bigDecimal.add(omsCartItem.getTotalPrice());
+                    bigDecimal = bigDecimal.add(omsCartItem.getTotalPrice());
+                }
             }
         }
         return bigDecimal;

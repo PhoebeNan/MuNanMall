@@ -40,4 +40,17 @@ public interface UserService {
      * @param userId
      */
     void addUserTokenToCache(String token, String userId);
+
+    /**
+     * 将用户信息保存到数据库中
+     * @param umsMember
+     */
+    UmsMember addAuthUserToDb(UmsMember umsMember);
+
+    /**
+     * 通过传入第三方网站用户的SourceUid，查看数据库中是否存在此用户
+     * @param checkUser
+     * @return
+     */
+    UmsMember checkAuthUser(UmsMember checkUser);
 }

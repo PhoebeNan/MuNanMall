@@ -148,14 +148,18 @@ public class PmsSkuInfoImpl implements PmsSkuInfoService {
                     }
 
                     System.out.println("ip为" + ip + "的同学:" + Thread.currentThread().getName() + "使用完毕，将锁归还" + sku_key_lock);
-                    String lockValue = jedis.get(sku_key_lock);
-                    if (StringUtils.isNotBlank(lockValue) && lockValue.equals(token)) {
-                        //释放分布式锁
-                        //jedis.eval("lua"); 可以用lua脚本在查询到key的同时删除key，防止高并发下的意外发生
-                        String script ="if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-                        jedis.eval(script, Collections.singletonList(sku_key_lock),Collections.singletonList(token));
-                        //jedis.del(sku_key_lock);
-                    }
+
+
+//                    String lockValue = jedis.get(sku_key_lock);
+//                    if (StringUtils.isNotBlank(lockValue) && lockValue.equals(token)) {
+
+                    //释放分布式锁
+                    //jedis.eval("lua"); 可以用lua脚本在查询到key的同时删除key，防止高并发下的意外发生
+                    String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+                    jedis.eval(script, Collections.singletonList(sku_key_lock), Collections.singletonList(token));
+                    //jedis.del(sku_key_lock);
+
+//                    }
                 } else {
                     //设置失败,将该线程睡眠几秒钟后，重新尝试访问此方法
                     System.out.println("ip为" + ip + "的同学:" + Thread.currentThread().getName() + "没有拿到锁，开始自旋");
@@ -193,7 +197,7 @@ public class PmsSkuInfoImpl implements PmsSkuInfoService {
         for (PmsSkuInfo pmsSkuInfo : pmsSkuInfos) {
             String skuId = pmsSkuInfo.getId();
 
-            PmsSkuAttrValue pmsSkuAttrValue= new PmsSkuAttrValue();
+            PmsSkuAttrValue pmsSkuAttrValue = new PmsSkuAttrValue();
             pmsSkuAttrValue.setSkuId(skuId);
             List<PmsSkuAttrValue> pmsSkuAttrValues = pmsSkuAttrValueMapper.select(pmsSkuAttrValue);
 
