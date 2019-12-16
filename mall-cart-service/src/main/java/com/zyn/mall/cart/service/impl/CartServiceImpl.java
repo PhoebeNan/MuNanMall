@@ -106,8 +106,6 @@ public class CartServiceImpl implements CartService {
                 list.add(omsCartItem);
             }
 
-
-
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -132,5 +130,14 @@ public class CartServiceImpl implements CartService {
         //同步到缓存
         flushCartCache(omsCartItem.getMemberId());
 
+    }
+
+    @Override
+    public void delCart(String productSkuId) {
+
+        Example example = new Example(OmsCartItem.class);
+        example.createCriteria().andEqualTo("productSkuId",productSkuId);
+
+        cartServiceMapper.deleteByExample(example);
     }
 }

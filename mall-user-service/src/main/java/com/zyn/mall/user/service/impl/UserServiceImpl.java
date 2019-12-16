@@ -116,6 +116,15 @@ public class UserServiceImpl implements UserService {
         return umsMember;
     }
 
+    @Override
+    public UmsMemberReceiveAddress getReceiveAddressById(String receiveAddressId) {
+
+        UmsMemberReceiveAddress umsMemberReceiveAddress = new UmsMemberReceiveAddress();
+        umsMemberReceiveAddress.setId(receiveAddressId);
+        UmsMemberReceiveAddress umsMemberReceiveAddress1 = umsMemberReceiveAddressMapper.selectOne(umsMemberReceiveAddress);
+        return umsMemberReceiveAddress1;
+    }
+
     /**
      * redis缓存中没有或redis宕机了，从数据库中查询用户信息
      *

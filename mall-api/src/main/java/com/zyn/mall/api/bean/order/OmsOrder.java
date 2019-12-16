@@ -2,16 +2,21 @@ package com.zyn.mall.api.bean.order;
 
 import lombok.Data;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class OmsOrder implements Serializable {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String memberId;
     private String couponId;
@@ -25,17 +30,17 @@ public class OmsOrder implements Serializable {
     private BigDecimal integrationAmount;
     private BigDecimal couponAmount;
     private BigDecimal discountAmount;
-    private int payType;
-    private int sourceType;
-    private int status;
-    private int orderType;
+    private Integer payType;
+    private Integer sourceType;
+    private Integer status;
+    private Integer orderType;
     private String deliveryCompany;
     private String deliverySn;
-    private int autoConfirmDay;
-    private int integration;
-    private int growth;
+    private Integer autoConfirmDay;
+    private Integer integration;
+    private Integer growth;
     private String promotionInfo;
-    private int billType;
+    private Integer billType;
     private String billHeader;
     private String billContent;
     private String billReceiverPhone;
@@ -48,14 +53,16 @@ public class OmsOrder implements Serializable {
     private String receiverRegion;
     private String receiverDetailAddress;
     private String note;
-    private int confirmStatus;
-    private int deleteStatus;
-    private int useIntegration;
+    private Integer confirmStatus;
+    private Integer deleteStatus;
+    private Integer useIntegration;
     private Date paymentTime;
     private Date deliveryTime;
     private Date receiveTime;
     private Date commentTime;
     private Date modifyTime;
 
+    @Transient
+    private List<OmsOrderItem> omsOrderItems;
 
 }

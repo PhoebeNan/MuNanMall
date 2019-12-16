@@ -1,5 +1,7 @@
 package com.zyn.mall.api.service;
 
+import com.zyn.mall.api.bean.order.OmsOrder;
+
 /**
  * @author zhaoyanan
  * @create 2019-12-12-14:15
@@ -21,4 +23,12 @@ public interface OrderService {
      * @return
      */
     String genertorTradeCode(String memberId);
+
+
+    /**
+     * //将订单和订单详情写入到数据库
+     * //删除购物车的对应商品
+     * @param omsOrder
+     */
+    void saveOrder(OmsOrder omsOrder);
 }

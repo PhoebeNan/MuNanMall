@@ -47,4 +47,10 @@ public interface CartService {
      * 通过商品的skuid修改isChecked选中状态  cartList页面中ajax异步刷新内嵌页面
      */
     void checkCart(OmsCartItem omsCartItem);
+
+    /**
+     * 通过商品skuid删除购物车数据
+     * @param productSkuId
+     */
+    void delCart(String productSkuId);
 }

@@ -1,12 +1,19 @@
 package com.zyn.mall.order.service.impl;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.zyn.mall.api.bean.order.OmsOrder;
+import com.zyn.mall.api.bean.order.OmsOrderItem;
+import com.zyn.mall.api.service.CartService;
 import com.zyn.mall.api.service.OrderService;
+import com.zyn.mall.order.service.mapper.OmsOrderItemMapper;
+import com.zyn.mall.order.service.mapper.OmsOrderMapper;
 import com.zyn.mall.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -19,6 +26,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private OmsOrderMapper omsOrderMapper;
+
+    @Autowired
+    private OmsOrderItemMapper omsOrderItemMapper;
+
+    @Reference
+    private CartService cartService;
 
     @Override
     public String checkTradeCode(String memberId, String tradeCode) {
@@ -67,4 +83,24 @@ public class OrderServiceImpl implements OrderService {
 
         return tradeCode;
     }
+
+    @Override
+    public void saveOrder(OmsOrder omsOrder) {
+
+        //保存订单
+        omsOrderMapper.insertSelective(omsOrder);
+        String orderId = omsOrder.getId();
+
+        //保存订单详情
+        List<OmsOrderItem> omsOrderItems = omsOrder.getOmsOrderItems();
+        for (OmsOrderItem omsOrderItem : omsOrderItems) {
+            omsOrderItem.setOrderId(orderId);
+            omsOrderItemMapper.insertSelective(omsOrderItem);
+
+            //删除购物车商品数据
+            String productSkuId = omsOrderItem.getProductSkuId();
+            cartService.delCart(productSkuId);
+        }
+    }
+
 }

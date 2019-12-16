@@ -2,6 +2,7 @@ package com.zyn.mall.api.service;
 
 import com.zyn.mall.api.bean.sku.PmsSkuInfo;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -43,4 +44,12 @@ public interface PmsSkuInfoService {
      * @return
      */
     List<PmsSkuInfo> getSkuAll(String catalog3Id);
+
+    /**
+     * 通过skuid将查询到的商品与库存中的商品价格进行毕竟
+     * @param productSkuId
+     * @param productPrice
+     * @return
+     */
+    boolean checkPrice(String productSkuId, BigDecimal productPrice);
 }

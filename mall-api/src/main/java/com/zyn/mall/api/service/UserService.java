@@ -53,4 +53,11 @@ public interface UserService {
      * @return
      */
     UmsMember checkAuthUser(UmsMember checkUser);
+
+    /**
+     * 根据收获地址id查询收获地址的详细信息
+     * @param receiveAddressId
+     * @return
+     */
+    UmsMemberReceiveAddress getReceiveAddressById(String receiveAddressId);
 }
