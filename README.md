@@ -41,6 +41,8 @@
 8086
 #mall-order-service 商品购物车服务的service层
 8076
+#mall-payment 支付宝服务的web和service层
+8087
 
 #已经提交github上的不必要文件，可以用的命令：
 git rm -r --cached idea

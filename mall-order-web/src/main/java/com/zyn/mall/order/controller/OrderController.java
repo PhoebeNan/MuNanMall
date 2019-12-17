@@ -13,6 +13,7 @@ import com.zyn.mall.api.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -43,10 +44,12 @@ public class OrderController {
 
     @RequestMapping("submitOrder")
     @LoginRequired
-    public String submitOrder(String tradeCode, String receiveAddressId, BigDecimal totalAmount, HttpServletRequest request, ModelMap modelMap) {
+    public ModelAndView submitOrder(String tradeCode, String receiveAddressId, BigDecimal totalAmount, HttpServletRequest request, ModelMap modelMap) {
 
         String memberId = (String) request.getAttribute("memberId");
         String memberNickname = (String) request.getAttribute("memberNickname");
+
+
 
         //检查交易码的正确性
         String success = orderService.checkTradeCode(memberId, tradeCode);
@@ -103,7 +106,10 @@ public class OrderController {
                     //检验价格
                     boolean orderPrice = skuService.checkPrice(omsCartItem.getProductSkuId(),omsCartItem.getPrice());
                     if (orderPrice == false) {
-                        return "tradeFail";
+                        ModelAndView modelAndView = new ModelAndView();
+                        modelAndView.setViewName("tradeFail");
+                        return modelAndView;
+//                        return "tradeFail";
                     }
                     //检验库存
                     omsOrderItem.setProductPic(omsCartItem.getProductPic());
@@ -131,11 +137,17 @@ public class OrderController {
             orderService.saveOrder(omsOrder);
 
             //重定向到支付系统
-            return null;
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("outTradeNo", outTradeNo);
+            modelAndView.addObject("totalAmount", totalAmount);
+            modelAndView.setViewName("redirect:http://payment.mall.com:8087/index");
+            return modelAndView;
 
         } else {
 
-            return "tradeFail";
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName("tradeFail");
+            return modelAndView;
         }
 
     }
