@@ -31,4 +31,11 @@ public interface OrderService {
      * @param omsOrder
      */
     void saveOrder(OmsOrder omsOrder);
+
+    /**
+     * 通过订单外部单号获取订单信息
+     * @param outTradeNo
+     * @return
+     */
+    OmsOrder getOrderOutTradeNo(String outTradeNo);
 }

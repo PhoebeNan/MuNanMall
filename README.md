@@ -56,6 +56,9 @@ npm run dev   http://127.0.0.1:8888
 #Linux虚拟机的开机账户，密码
 root   123456
 
+#activeMq 启动
+activemq start     端口为：8161
+
 #并发压力测试，apache haus 命令  D:\apache-haus\Apache24\bin
 先开启，输入  httpd.exe    c代表并发数  n代表请求数
 abs或者ab -c 200 -n 1000 http://www.mall.com/lock
