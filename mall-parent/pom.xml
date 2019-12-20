@@ -39,6 +39,7 @@
         <beanUtils.version>1.9.3</beanUtils.version>
         <lombok.version>1.18.10</lombok.version>
         <devtools.version>2.1.4.RELEASE</devtools.version>
+        <commons-io.version>2.4</commons-io.version>
     </properties>
 
 
@@ -159,6 +160,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-devtools</artifactId>
                 <version>${devtools.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

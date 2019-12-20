@@ -82,12 +82,18 @@
             <version>1.27-SNAPSHOT</version>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.apache.commons.io</groupId>-->
+<!--            <artifactId>commonsIO</artifactId>-->
+<!--            <version>2.5.0</version>-->
+<!--        </dependency>-->
+
         <dependency>
-            <groupId>org.apache.commons.io</groupId>
-            <artifactId>commonsIO</artifactId>
-            <version>2.5.0</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
         </dependency>
-        
+
     </dependencies>
 
 </project>

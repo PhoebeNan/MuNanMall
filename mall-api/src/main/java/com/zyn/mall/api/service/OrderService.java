@@ -38,4 +38,10 @@ public interface OrderService {
      * @return
      */
     OmsOrder getOrderOutTradeNo(String outTradeNo);
+
+    /**
+     * 在监听到消息队列时更新订单状态 变成已支付
+     * @param omsOrder
+     */
+    void updateOrderStatus(OmsOrder omsOrder);
 }

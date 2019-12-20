@@ -6,12 +6,16 @@ import com.zyn.mall.api.bean.order.OmsOrder;
 import com.zyn.mall.api.bean.order.OmsOrderItem;
 import com.zyn.mall.api.service.CartService;
 import com.zyn.mall.api.service.OrderService;
+import com.zyn.mall.mq.ActiveMQUtil;
 import com.zyn.mall.order.service.mapper.OmsOrderItemMapper;
 import com.zyn.mall.order.service.mapper.OmsOrderMapper;
 import com.zyn.mall.utils.RedisUtils;
+import org.apache.activemq.command.ActiveMQMapMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import redis.clients.jedis.Jedis;
+import tk.mybatis.mapper.entity.Example;
 
+import javax.jms.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +39,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Reference
     private CartService cartService;
+
+    @Autowired
+    private ActiveMQUtil activeMQUtil;
 
     @Override
     public String checkTradeCode(String memberId, String tradeCode) {
@@ -98,8 +105,8 @@ public class OrderServiceImpl implements OrderService {
             omsOrderItemMapper.insertSelective(omsOrderItem);
 
             //删除购物车商品数据
-            String productSkuId = omsOrderItem.getProductSkuId();
-            cartService.delCart(productSkuId);
+            //String productSkuId = omsOrderItem.getProductSkuId();
+            //cartService.delCart(productSkuId);
         }
     }
 
@@ -111,6 +118,64 @@ public class OrderServiceImpl implements OrderService {
         OmsOrder omsOrder1 = omsOrderMapper.selectOne(omsOrder);
 
         return omsOrder1;
+    }
+
+    @Override
+    public void updateOrderStatus(OmsOrder omsOrder) {
+
+        Example example = new Example(OmsOrder.class);
+        example.createCriteria().andEqualTo("orderSn", omsOrder.getStatus());
+
+        OmsOrder omsOrder1 = new OmsOrder();
+        omsOrder1.setStatus(1);
+
+
+
+        //发送一个订单已支付的队列，提供给库存消费
+        //调用消息队列
+        ConnectionFactory connectionFactory;
+        Connection connection = null;
+        Session session = null;
+
+        try {
+            connectionFactory = activeMQUtil.getConnectionFactory();
+            connection = connectionFactory.createConnection();
+            session = connection.createSession(true, Session.SESSION_TRANSACTED);
+
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            //支付成功后，引起的的系统各种服务(订单服务的更新-》库存服务-》物流服务)
+            //发送一个订单已支付的队列，提供给库存消费
+            omsOrderMapper.updateByExampleSelective(omsOrder1, example);
+
+            Queue order_pay_queue = session.createQueue("ORDER_PAY_QUEUE");
+            MessageProducer producer = session.createProducer(order_pay_queue);
+
+//            ActiveMQTextMessage activeMQTextMessage = new ActiveMQTextMessage();//字符串文本消息
+            MapMessage mapMessage = new ActiveMQMapMessage();//hash结构消息
+
+            producer.send(mapMessage);
+
+            session.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                session.rollback();
+            } catch (JMSException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            try {
+                connection.close();
+                session.close();
+            } catch (JMSException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
