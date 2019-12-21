@@ -50,6 +50,7 @@ public class AlipayConfig {
     @Bean
     public AlipayClient alipayClient() {
         AlipayClient alipayClient = new DefaultAlipayClient(alipay_url, app_id, app_private_key, format, charset, alipay_public_key, sign_type);
+
         return alipayClient;
     }
 }
