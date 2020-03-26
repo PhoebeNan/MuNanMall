@@ -46,7 +46,7 @@ public class PmsSkuInfoImpl implements PmsSkuInfoService {
     @Override
     public void saveSkuInfo(PmsSkuInfo pmsSkuInfo) {
 
-        //如何前台传递过来的pmsSkuInfo对象中没有选择图片的默认值，那么后台可以给用户设置一个默认值
+        //如果前台传递过来的pmsSkuInfo对象中没有选择图片的默认值，那么后台可以给用户设置一个默认值
         String skuDefaultImg = pmsSkuInfo.getSkuDefaultImg();
         if (StringUtils.isBlank(skuDefaultImg)) {
 
@@ -82,7 +82,6 @@ public class PmsSkuInfoImpl implements PmsSkuInfoService {
             pmsSkuImage.setSkuId(skuInfoId);
             pmsSkuImageMapper.insertSelective(pmsSkuImage);
         }
-
 
     }
 

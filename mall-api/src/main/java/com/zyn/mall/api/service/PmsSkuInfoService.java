@@ -18,7 +18,7 @@ public interface PmsSkuInfoService {
     void saveSkuInfo(PmsSkuInfo pmsSkuInfo);
 
     /**
-     * 通过skuId查找对应的skuInfo数据
+     * 在Redis缓存数据库中通过skuId查找对应的skuInfo数据
      * @param skuId
      * @return
      */
@@ -32,7 +32,7 @@ public interface PmsSkuInfoService {
     List<PmsSkuInfo> getSkuSaleAttrValueListBySpu(String spuId);
 
     /**
-     * 在Redis缓存数据库中通过skuId查找对应的skuInfo数据
+     * 通过skuId查找对应的skuInfo数据
      * @param skuId
      * @return
      */

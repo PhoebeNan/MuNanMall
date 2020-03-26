@@ -24,6 +24,7 @@ public class AttrController {
     @Reference
     private AttrValueService attrValueService;
 
+    //1.通过PmsBaseAttrInfo三级分类的id查询其下的所有平台属性
     //http://127.0.0.1:8081/attrInfoList?catalog3Id=207
     @RequestMapping(value = "/attrInfoList", method = RequestMethod.GET)
     @ResponseBody  //返回json格式

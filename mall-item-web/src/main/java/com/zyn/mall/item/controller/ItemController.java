@@ -62,17 +62,23 @@ public class ItemController {
         }else {
             ip = request.getRemoteAddr();
         }
+
         //通过skuId查询一个sku商品
         PmsSkuInfo pmsSkuInfo = pmsSkuInfoService.skuInfoBySkuIdFromRedis(skuId,ip);
+
+
         //查询spu下所有sku的销售属性列表的集合
         String spuId = pmsSkuInfo.getSpuId();
         List<PmsProductSaleAttr> spuSaleAttrListCheckBySku = spuProductService.spuSaleAttrListCheckBySku(spuId,skuId);
         modelMap.put("spuSaleAttrListCheckBySku",spuSaleAttrListCheckBySku);
         modelMap.put("skuInfo", pmsSkuInfo);
 
+
         //通过查询出来spu下的销售属性值列表的id值和此spu下存在的所有skuId值，将其封装到一个
         //HashMap中，在转换成json字符串传递到前台客户端的js代码中
         List<PmsSkuInfo> pmsSkuInfoList = pmsSkuInfoService.getSkuSaleAttrValueListBySpu(spuId);
+
+
 
         HashMap<String, String> skuSaleAttrValueHashMap = new HashMap<>();
 
@@ -90,6 +96,7 @@ public class ItemController {
             }
             skuSaleAttrValueHashMap.put(k, v);
         }
+
 
         String skuSaleAttrValueHashMapJson = JSON.toJSONString(skuSaleAttrValueHashMap);
         modelMap.put("skuSaleAttrValueHashMapJson",skuSaleAttrValueHashMapJson);

@@ -33,6 +33,7 @@ public class SpuController {
     private PmsProductImageService pmsProductImageService;
 
     //http://127.0.0.1:8081/spuList?catalog3Id=61
+    //1.通过三级分类id查询spu的商品信息列表
     @RequestMapping(value = "/spuList",method = RequestMethod.GET)
     @ResponseBody
     public List<PmsProductInfo> spuList(@RequestParam(name = "catalog3Id") String catalog3Id){
@@ -40,6 +41,9 @@ public class SpuController {
         List<PmsProductInfo> pmsProductInfos = spuProductService.spuList(catalog3Id);
         return pmsProductInfos;
     }
+
+
+    //2.查询所有销售属性的key值
     //baseSaleAttrList spu下的销售属性名称
     @RequestMapping(value = "/baseSaleAttrList",method = RequestMethod.POST)
     @ResponseBody
@@ -49,7 +53,10 @@ public class SpuController {
         return pmsBaseSaleAttrList;
     }
 
+
+
     //fileUpload
+    //3.上传图片到fastdfs服务器的storage
     //https://m.360buyimg.com/babel/jfs/t5137/20/1794970752/352145/d56e4e94/591417dcN4fe5ef33.jpg
     @RequestMapping("/fileUpload")
     @ResponseBody
@@ -62,7 +69,10 @@ public class SpuController {
         return imageUpLoadPath;
     }
 
+
+
     //saveSpuInfo
+    //4.把商品的元数据信息保存到数据库中
     @RequestMapping("/saveSpuInfo")
     @ResponseBody
     public String saveSpuInfo(@RequestBody PmsProductInfo pmsProductInfo){

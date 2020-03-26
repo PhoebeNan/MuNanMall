@@ -17,7 +17,7 @@ public class PmsProductImage implements Serializable {
     @Id
     private String id;
     @Column
-    private String productId;
+    private String productId; //spu的id
     @Column
     private String imgName;
     @Column

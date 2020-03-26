@@ -2,9 +2,7 @@ package com.zyn.mall.api.bean.base;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -15,6 +13,7 @@ import java.io.Serializable;
 public class PmsBaseAttrValue implements Serializable {
     @Id
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     @Column
     private String valueName;

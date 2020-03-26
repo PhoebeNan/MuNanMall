@@ -11,7 +11,7 @@ import java.util.List;
 public interface PmsProductSaleAttrService {
 
     /**
-     * 通过spuId查询此spu下的所有平台属性值
+     * 通过spuId查询此spu下的所有销售属性值
      * @param spuId
      * @return
      */

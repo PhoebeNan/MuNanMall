@@ -42,7 +42,6 @@ public class AttrInfoImpl implements AttrInfoService {
             //在查询出平台属性的同时，查询出平台属性值
             PmsBaseAttrValue pmsBaseAttrValue = new PmsBaseAttrValue();
             pmsBaseAttrValue.setAttrId(pmsBaseAttrInfo.getId());
-
             pmsBaseAttrValueList = pmsBaseAttrValueMapper.select(pmsBaseAttrValue);
             pmsBaseAttrInfo.setAttrValueList(pmsBaseAttrValueList);
         }
@@ -56,21 +55,25 @@ public class AttrInfoImpl implements AttrInfoService {
         String attrInfoId = pmsBaseAttrInfo.getId();
         //第一次是保存操作
         if (StringUtils.isBlank(attrInfoId)) {
-            insertAttrAndValue(pmsBaseAttrInfo, attrInfoId);
+            insertAttrAndValue(pmsBaseAttrInfo);
         } else {
             //第二次是修改操作
             //先更新属性
             Example example = new Example(PmsBaseAttrInfo.class);
-            example.createCriteria().andEqualTo("id",attrInfoId);
+            example.createCriteria().andEqualTo("id", attrInfoId);
             pmsBaseAttrInfoMapper.updateByExampleSelective(pmsBaseAttrInfo, example);
-            //先删除属性值
-//            Example example2 = new Example(PmsBaseAttrValue.class);
-//            example.createCriteria().andEqualTo("attrId",attrInfoId);
-//            pmsBaseAttrValueMapper.deleteByExample(example2);
 
-            PmsBaseAttrValue pmsBaseAttrValue = new PmsBaseAttrValue();
-            pmsBaseAttrValue.setAttrId(attrInfoId);
-            pmsBaseAttrValueMapper.delete(pmsBaseAttrValue);
+
+            //===========================================================
+            //先删除属性值
+            Example example2 = new Example(PmsBaseAttrValue.class);
+            example2.createCriteria().andEqualTo("attrId",attrInfoId);
+            pmsBaseAttrValueMapper.deleteByExample(example2);
+
+
+//            PmsBaseAttrValue pmsBaseAttrValue = new PmsBaseAttrValue();
+//            pmsBaseAttrValue.setAttrId(attrInfoId);
+//            pmsBaseAttrValueMapper.delete(pmsBaseAttrValue);
 
             //删除完属性值后在进行插入保存操作
             //设置属性值
@@ -79,6 +82,19 @@ public class AttrInfoImpl implements AttrInfoService {
                 pmsBasevalueInfo.setAttrId(attrInfoId);
                 pmsBaseAttrValueMapper.insertSelective(pmsBasevalueInfo);
             }
+
+
+            //===========================================================
+            //设置属性值 ，更新属性值
+            //这种方式对此系统的删除功能无法生效，因为属性值的删除按钮只是在前台删除，并没有发送controller请求
+//            for (PmsBaseAttrValue pmsBasevalueInfo : pmsBaseAttrInfo.getAttrValueList()) {
+//
+//                Example example3 = new Example(PmsBaseAttrValue.class);
+//                String id = pmsBasevalueInfo.getId();
+//                example3.createCriteria().andEqualTo("id", id);
+//                pmsBaseAttrValueMapper.updateByExampleSelective(pmsBasevalueInfo, example3);
+//            }
+
         }
 
         return "success";
@@ -89,19 +105,21 @@ public class AttrInfoImpl implements AttrInfoService {
 
         //得到所有平台属性的id值
         String valueIdStr = StringUtils.join(set, ",");
-        List<PmsBaseAttrInfo> pmsBaseAttrInfos= pmsBaseAttrInfoMapper.selectAttrInfoListByValueIdFormDb(valueIdStr);
+        List<PmsBaseAttrInfo> pmsBaseAttrInfos = pmsBaseAttrInfoMapper.selectAttrInfoListByValueIdFormDb(valueIdStr);
 
         return pmsBaseAttrInfos;
     }
 
-    private void insertAttrAndValue(PmsBaseAttrInfo pmsBaseAttrInfo, String attrInfoId) {
+
+    private void insertAttrAndValue(PmsBaseAttrInfo pmsBaseAttrInfo) {
         //设置属性
         pmsBaseAttrInfoMapper.insertSelective(pmsBaseAttrInfo);
+        String infoId = pmsBaseAttrInfo.getId();
 
         //设置属性值
         for (PmsBaseAttrValue pmsBasevalueInfo : pmsBaseAttrInfo.getAttrValueList()) {
 
-            pmsBasevalueInfo.setAttrId(attrInfoId);
+            pmsBasevalueInfo.setAttrId(infoId);
             pmsBaseAttrValueMapper.insertSelective(pmsBasevalueInfo);
         }
     }
